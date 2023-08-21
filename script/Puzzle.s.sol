@@ -25,9 +25,11 @@ contract PuzzleScript is Script {
     //forge script script/Puzzle.s.sol:PuzzleScript --rpc-url $MAINNET_RPC --broadcast --verify -vvvv
 
     function run() public {
-        address nerv = deployHuff("./src/NERVCommand.huff");
+        // address nerv = deployHuff("./src/NERVCommand.huff");
+        address nerv = 0xac6a22d4d89e5B4e7a891474257f67c86101796C; // deployed
         // vm.broadcast();
         // Puzzle puzzle = new Puzzle(nerv);
         // console.log("Puzzle Address", address(puzzle));
+        address puzzle = 0xE92126D243D8290B47Af8b198B662Bf301439830; // deployed
     }
 }
