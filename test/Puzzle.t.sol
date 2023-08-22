@@ -28,7 +28,8 @@ contract PuzzleTest is Test {
     /// @notice Good luck!
     function testFuzzSolvePuzzle(uint256 solution) public {
         address player = address(this);
-        (bool success, bytes memory data) = address(puzzle).call(abi.encodeWithSignature("verify(uint256,uint256)", solution, puzzle.generate(player)));
+        (bool success, bytes memory data) = address(puzzle).call(
+            abi.encodeWithSignature("verify(uint256,uint256)", puzzle.generate(player), solution ));
         if (success) {
             bool solved = abi.decode(data, (bool));
             if (solved) {
