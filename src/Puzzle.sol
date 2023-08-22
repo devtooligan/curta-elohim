@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
-
 import {IPuzzle} from "curta/src/interfaces/IPuzzle.sol";
 
 /**
- *                        ()                        ^^                   - (   )-
- *                        |                                         v      / | \
+ *                        ()                        ^^                  - (     )-
+ *                        |                                         v    ' / | \ `
  *                   //****\\            .
  *           =======//  * * \\======                     <
  *         ///===\ //\\____//  ===\\\            .                       ^      ^
@@ -23,20 +22,24 @@ import {IPuzzle} from "curta/src/interfaces/IPuzzle.sol";
  *             Elohim: The Fifth Impact
  *     =====================================
  *
- *     In the looming shadow of impending annihilation, humanity confronts an unparalleled menace — the Elohim.
- *     These warrior angels wield weapons of insurmountable destruction and can communicate with their hive through their
- *     ethereal antennae. A single Elohim scout has arrived on Earth signaling the ominous advance of an entire fleet, poised
- *     to unleash the cataclysmic Fifth Impact upon our world.
+ *     In the looming shadow of impending annihilation, humanity confronts an unparalleled menace
+ *     — the Elohim.  These warrior angels wield weapons of insurmountable destruction and can
+ *     communicate with their hive through their ethereal antennae. A single Elohim scout has
+ *     arrived on Earth signaling the ominous advance of an entire fleet, poised to unleash the
+ *     cataclysmic Fifth Impact upon our world.
  *
- *     From the depths of NERV Command, a beacon of hope emerges: Eva Units Seven, Eight, Nine, and Ten.
- *     These quantum-linked marvels of technology, can synchronize under the command of a single pilot.
+ *     From the depths of NERV Command, a beacon of hope emerges: Eva Units Seven, Eight, Nine,
+ *     and Ten. These quantum-linked marvels of technology, can synchronize under the command of a
+ *     single pilot.
  *
  *     Now the destiny of Tokyo-3 and all of Earth hinges upon you, pilot.
  *
- *     Can you master the four Evas, quell the Elohim threat, and unlock their DNA sequence to halt the impending invasion?
+ *     Can you master the four Evas, quell the Elohim threat, and unlock their DNA sequence to
+ *     halt the impending invasion?
  *
- *     In this climactic clash of unity and chaos, where humanity's essence is laid bare, the moment has arrived to brave the
- *     unknown. Are you prepared to become the savior, our final hope in the darkest hour?
+ *     In this climactic clash of unity and chaos, where humanity's essence is laid bare, the
+ *     moment has arrived to brave the unknown. Are you prepared to become the savior, our final
+ *     hope in the darkest hour?
  *
  *     The Fifth Impact looms, and the ultimate battle ignites.
  */
@@ -74,27 +77,27 @@ contract Puzzle is IPuzzle {
     }
 
     function _verify(uint256 pilotAddress, uint256 input) external view returns (bool worldSaved) {
+        /******************************* input ***************************************************
+         **   | Evangelion                             | Eva    | Elohim DNA   | Simulator      **
+         **   | Control Address                        | Config | Prediction   | Difficulty     **
+         ** 0x 00112233445566778899AABBCCDDEEFF00112233 A1A2A3A3 AAAAAAAAAAAAAA 18              **
+         *****************************************************************************************/
         require(msg.sender == addressThis, "ser, this is a wendy's");
         address pilot = address(uint160(pilotAddress));
 
-        // Input:
-        //   | Evangelion                             | Eva    | Elohim DNA   | Simulator Difficulty
-        //   | Control Address                        | Config | Prediction   | (lowest byte)
-        // 0x 00112233445566778899AABBCCDDEEFF00112233 A1A2A3A3 AAAAAAAAAAAAAA 18
-
-        // Simulator Difficulty
+        /** Simulator Difficulty */
         uint8 difficulty = uint8(input);
         _validateSimulatorDifficulty(difficulty, pilot);
 
-        // Elohim DNA
-        // It's up to you to develop an algorithm that can predict the Elohim's DNA sequence in advance.
-        // If you can do it, we can develop genetic weaponry to take on the invaders and we just might
-        // have a chance at saving the world.
+        /** Elohim DNA
+        It's up to you to develop an algorithm that can predict the Elohim's DNA sequence in
+        advance. If you can do it, we can develop genetic weaponry to take on the invaders and
+        we just might have a chance at saving the world. */
         uint56 dnaVerification = uint56(uint256(input >> 8));
 
-        // Eva Config
-        // The Eva configuration is based on a combination of the pilot's DNA and time-dependent environmental factors.
-        // These settings must be used in the submitted input, pilot.
+        /** Eva Config
+        The Eva configuration is based on a combination of the pilot's DNA and time-dependent
+        environmental factors. These settings must be used in the submitted input, pilot. */
         uint256 config = (input & CONFIG_MASK) >> 64;
         if (generateEvaConfig(pilot, difficulty) != config) revert("invalid eva config");
         uint256[] memory configVals = new uint256[](4);
@@ -102,7 +105,7 @@ contract Puzzle is IPuzzle {
             configVals[idx] = uint8(config >> (3 - idx) * 8);
         }
 
-        // Evangelion Control Address
+        /** Evangelion Control Address */
         address solutionAddress = address(uint160((input & ADDRESS_MASK) >> 96));
         _validateEvangelionControlProtocol(solutionAddress, difficulty); /**
 
@@ -122,7 +125,8 @@ contract Puzzle is IPuzzle {
                         ██████████████████████████████████████████████
                                      Defeat the Elohim
 
-        This is it pilot! You're cleared to establish Eva-link with NERV Command -- good luck and God speed! */
+        You're cleared to establish Eva-link with NERV Command...
+        This is it pilot -- good luck and God speed! */
         (uint256 s2EngineCheck, uint256 dnaSampled) = callNERVCommand(solutionAddress, configVals, difficulty);
 
 
@@ -193,7 +197,14 @@ contract Puzzle is IPuzzle {
                                                             `Y8*/
 
         (bool success, bytes memory data) = address(NERV).staticcall(
-            abi.encode(solutionAddress, configVals[0], configVals[1], configVals[2], configVals[3], difficulty)
+            abi.encode(
+                solutionAddress,
+                configVals[0],
+                configVals[1],
+                configVals[2],
+                configVals[3],
+                difficulty
+            )
         );
         require(success, "link interrupted");
         uint256 dnaSampledFull;
@@ -206,24 +217,25 @@ contract Puzzle is IPuzzle {
     ////////////////////////////////////////////////////////////////////////////////////////
 
     function _validateSimulatorDifficulty(uint8 difficulty, address pilot) internal pure {
-        // There are 4 levels of difficulty that pilots can choose from when entering the simulator:
-        // 0x01 - HARD
-        // 0x02 - INSANE
-        // 0x03 - IMPOSSIBLE
-        // 0x18 - CHAINLIGHT
+        /** There are 4 levels of difficulty that pilots can choose when entering the simulator:
 
-        // Pilot ranked #1 on the Curta leaderboard must select CHAINLIGHT
-        // Pilots ranked #2-#10 on the Curta leaderboard must select at least level IMPOSSIBLE
-        // Pilots ranked #11-#25 must select at least difficulty level INSANE
-        // All other pilots must select at least difficulty level HARD
+        0x01 - HARD
+        0x02 - INSANE
+        0x03 - IMPOSSIBLE
+        0x18 - CHAINLIGHT
 
-        // Warning: Choosing the CHAINLIGHT difficulty means engaging in a live battle with the Elohim.
-        // The number one rank on the leaderboard is required to engage in this mode, but anyone brave enough
-        // can also try. Evangelions lost in this mode CANNOT be revived.
+        Pilot ranked #1 on the Curta leaderboard must select CHAINLIGHT
+        Pilots ranked #2-#10 on the Curta leaderboard must select at least level IMPOSSIBLE
+        Pilots ranked #11-#25 must select at least difficulty level INSANE
+        All other pilots must select at least difficulty level HARD
 
-        // Choose your difficulty by setting the lowest byte of the solution to the desired difficulty level
-        // Choosing a higher difficulty is guaranteed to bring you untold fame, new friends, and increased
-        // chances of finding a girlfriend.
+        Warning: Choosing the CHAINLIGHT difficulty means engaging in a live battle with the
+        Elohim. The number one rank on the leaderboard is required to engage in this mode, but
+        anyone brave enough can also try. Evangelions lost in this mode CANNOT be revived.
+
+        Choose your difficulty by setting the lowest byte of the solution to the desired difficulty
+        level. Choosing a higher difficulty is guaranteed to bring you untold fame, new friends,
+        and increased chances of finding a girlfriend. */
 
         bool valid;
         if (_isLeadeboardTopDog(pilot)) {
@@ -235,8 +247,10 @@ contract Puzzle is IPuzzle {
         } else {
             valid = difficulty == DIFFICULTY_LEVEL_HARD || _isDifficultyInsaneOrHigher(difficulty);
         }
-        require(valid, "no plebs");
+
+        require(valid, "no plebs");  // you're like a pleb in a pillory in lieu of this exposé...
     }
+
     function _superSolenoidEngineCheck(uint256 s2EngineCheck, uint8 difficulty) internal pure {
         uint solenoidEngineThreshold;
         if (difficulty == DIFFICULTY_LEVEL_CHAINLIGHT) {
@@ -267,13 +281,16 @@ contract Puzzle is IPuzzle {
 
     function _isValidQuantumValue(bytes1 opcd, uint8 difficulty) internal pure returns (bool) {
         if (difficulty == DIFFICULTY_LEVEL_CHAINLIGHT) {
-            if (opcd == 0x18 || opcd == 0x42 || opcd == 0x44 || opcd == 0x46 || opcd == 0x48) return false;
+            if (opcd == 0x18 || opcd == 0x42 || opcd == 0x44 ||
+                opcd == 0x46 || opcd == 0x48) return false;
         }
         if (_isDifficultyImpossibleOrHigher(difficulty)) {
-            if (opcd == 0x34 || opcd == 0x33 || opcd == 0x39 || opcd == 0x3f || opcd == 0x40) return false;
+            if (opcd == 0x34 || opcd == 0x33 || opcd == 0x39 ||
+                opcd == 0x3f || opcd == 0x40) return false;
         }
         if (_isDifficultyInsaneOrHigher(difficulty)) {
-            if (opcd == 0xF1 || opcd == 0xF2 || opcd == 0xF4 || opcd == 0xFa || opcd == 0xFe) return false;
+            if (opcd == 0xF1 || opcd == 0xF2 || opcd == 0xF4 ||
+            opcd == 0xFa || opcd == 0xFe) return false;
         }
         return !(opcd == 0xf5 || opcd == 0xff);
     }
@@ -302,15 +319,14 @@ contract Puzzle is IPuzzle {
     }
 
     function _validateEvangelionControlProtocol(address solution, uint8 difficulty) internal view {
-        // You're not a rookie any more, pilot.
+        /** You're not a rookie any more, pilot.
 
-        // Runtime gas limits, bytecode size restraints, opcode restrictions, and vanity addresses are
-        // just par for the course. Let's do this and get on the battle field.
+        Runtime gas limits, bytecode size restraints, opcode restrictions, and vanity addresses are
+        just par for the course. Let's do this and get on the battle field. */
         require(_isValidAddress(solution, difficulty), "mining failure");
         require(_isValidCodeSize(solution, difficulty), "too long! twss");
         _validateQuantamValues(solution, difficulty);
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //                                  UTILITIES                                         //
@@ -321,25 +337,32 @@ contract Puzzle is IPuzzle {
     }
 
     function _isLeaderboardTop10(address addr) internal pure returns (bool) {
-        return addr == LEADERBOARD_2_ADDRESS || addr == LEADERBOARD_3_ADDRESS || addr == LEADERBOARD_4_ADDRESS
-            || addr == LEADERBOARD_5_ADDRESS || addr == LEADERBOARD_6_ADDRESS || addr == LEADERBOARD_7_ADDRESS
-            || addr == LEADERBOARD_8_ADDRESS || addr == LEADERBOARD_9_ADDRESS || addr == LEADERBOARD_10_ADDRESS;
+        return addr == LEADERBOARD_2_ADDRESS || addr == LEADERBOARD_3_ADDRESS ||
+               addr == LEADERBOARD_4_ADDRESS || addr == LEADERBOARD_5_ADDRESS ||
+               addr == LEADERBOARD_6_ADDRESS || addr == LEADERBOARD_7_ADDRESS ||
+               addr == LEADERBOARD_8_ADDRESS || addr == LEADERBOARD_9_ADDRESS ||
+               addr == LEADERBOARD_10_ADDRESS;
     }
 
     function _isLeaderboardTop25(address addr) internal pure returns (bool) {
-        return addr == LEADERBOARD_11_ADDRESS || addr == LEADERBOARD_12_ADDRESS || addr == LEADERBOARD_13_ADDRESS
-            || addr == LEADERBOARD_14_ADDRESS || addr == LEADERBOARD_15_ADDRESS || addr == LEADERBOARD_16_ADDRESS
-            || addr == LEADERBOARD_17_ADDRESS || addr == LEADERBOARD_18_ADDRESS || addr == LEADERBOARD_19_ADDRESS
-            || addr == LEADERBOARD_20_ADDRESS || addr == LEADERBOARD_21_ADDRESS || addr == LEADERBOARD_22_ADDRESS
-            || addr == LEADERBOARD_23_ADDRESS || addr == LEADERBOARD_24_ADDRESS || addr == LEADERBOARD_25_ADDRESS;
+        return addr == LEADERBOARD_11_ADDRESS || addr == LEADERBOARD_12_ADDRESS ||
+               addr == LEADERBOARD_13_ADDRESS || addr == LEADERBOARD_14_ADDRESS ||
+               addr == LEADERBOARD_15_ADDRESS || addr == LEADERBOARD_16_ADDRESS ||
+               addr == LEADERBOARD_17_ADDRESS || addr == LEADERBOARD_18_ADDRESS ||
+               addr == LEADERBOARD_19_ADDRESS || addr == LEADERBOARD_20_ADDRESS ||
+               addr == LEADERBOARD_21_ADDRESS || addr == LEADERBOARD_22_ADDRESS ||
+               addr == LEADERBOARD_23_ADDRESS || addr == LEADERBOARD_24_ADDRESS ||
+               addr == LEADERBOARD_25_ADDRESS;
     }
 
     function _isDifficultyImpossibleOrHigher(uint8 difficulty) internal pure returns (bool) {
-        return difficulty == DIFFICULTY_LEVEL_IMPOSSIBLE || difficulty == DIFFICULTY_LEVEL_CHAINLIGHT;
+        return difficulty == DIFFICULTY_LEVEL_IMPOSSIBLE ||
+               difficulty == DIFFICULTY_LEVEL_CHAINLIGHT;
     }
 
     function _isDifficultyInsaneOrHigher(uint8 difficulty) internal pure returns (bool) {
-        return difficulty == DIFFICULTY_LEVEL_INSANE || _isDifficultyImpossibleOrHigher(difficulty);
+        return difficulty == DIFFICULTY_LEVEL_INSANE ||
+                               _isDifficultyImpossibleOrHigher(difficulty);
     }
 
 

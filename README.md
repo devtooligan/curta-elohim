@@ -1,66 +1,70 @@
-## Foundry
+# Elohim: The Fifth Impact
+A puzzle for Curta CTF by @devtooligan
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+```
+                    \\
+                      \\
+                        \
+             ===7===== / *)
+             ========= \ *)>>                                    ()
+                        /            \\                          |
+                      //               \\                   // ***\
+       \\           //                   \          =======//  * * \\======
+         \\                   ===8===== /  \>     ///===\ //\\____//  ===\\\
+           \                  ========= \  />    |||     \|         |/    \\\
+=10====== / ()_                          /       |||      |  O---O  |      \\\___....
+========= \ ()          \\             //        |||      |    -    |       \\\///oo///=-=-=-
+           /              \\         //          X|X      |         |        XX|X===////''
+         //                 \                   ()||\     |  O---O  |           ^^^^     _______
+       //        =9======= / .)                 | /  \  //    /\    \\                  | o o o |
+                 ========= \ .)                          \\    \ \    \\     ____       | o o o |
+                            /                             \\   \  \   ||    |o  o|  /|==| o o o |
+                          //                               || ||   \  ||    |o  o| /=|  | o o o |
+                        //                                /_____\  /_____\  |    |/  |  | o|| o |
+                       */
+```
 
-Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
+### Install Foundry
 
 https://book.getfoundry.sh/
 
-## Usage
-
-### Build
-
+### Install deps
 ```shell
-$ forge build
+$ forge install
 ```
 
-### Test
+### Run tests
 
 ```shell
 $ forge test
 ```
 
-### Format
 
-```shell
-$ forge fmt
+### Solve the puzzle
+You got this!!
+
 ```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+  ┌─┬────────────────────────────────────────────────────────────────────────────────────────┬─┐
+  │ ├────────────────────────────────────────────────────────────────────────────────────────┤ │
+  │ │                    //  S  //  S  //================\\  S  \\  S  \                     │ │
+  │ │                   //  S  //  S  //                  \\  S  \\  S \\                    │ │
+  │ │    ┌────────────────────────────┐                 ┌────────────────────────────┐       │ │
+  │ │    │DANANG TYPE-8 DEFENSE SCREEN│    ___          │TIME TO COLLAPSE :  223.229 │       │ │
+  │ │    └────────────────────────────┘   \   \         └────────────────────────────┘       │ │
+  │ │               //  S  //  S  //       \ X \              \\  S  \\  S \\                │ │
+  │ │              //  S  //  S  //         \ X \_________     \\  S  \\  S \\               │ │
+  │ │             //  S  //  S  //           \   CELEBRUM/      \\  S  \\  S \\              │ │
+  │ │            //  S  //  S  //            /01 _______/        \\  S  \\  S \\             │ │
+  │ │            \\  S  \\  S  \\           / M /                //  S  //  S //             │ │
+  │ │             \\  S  \\  S  \\         / A /                //  S  //  S //              │ │
+  │ │              \\  S  \\  S  \\       / G /                //  S  //  S //               │ │
+  │ │               \\  S  \\  S  \\     /_I_/                //  S  //  S //                │ │
+  │ │    ┌────────────────────────────┐                  ┌────────────────────────────┐      │ │
+  │ │    │PROTECT NO. 666 ON MAGI-01  │                  │TIME SINCE/SCREEN RAISED 009│      │ │
+  │ │    └────────────────────────────┘                  └────────────────────────────┘      │ │
+  │ │                   \\  S  \\  S  \\                  //  S  //  S //                    │ │
+  │ │                    \\  S  \\  S  \\================//  S  //  S //                     │ │
+  │ ├────────────────────────────────────────────────────────────────────────────────────────┤ │
+  └─┴────────────────────────────────────────────────────────────────────────────────────────┴─
 ```
