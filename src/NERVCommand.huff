@@ -340,7 +340,7 @@
     __FUNC_SIG(eva_TEN) 0x00 mstore CONFIRM_EVA_CONTRACT()
 }
 
-#define fn ATTACK_WAVE2() = takes (1) returns (2) {
+#define macro ATTACK_WAVE2() = takes (1) returns (2) {
     __FUNC_SIG(eva_SEVEN) 0x00 mstore CALL_EVA_CONTRACT()
     __FUNC_SIG(eva_EIGHT) 0x00 mstore CALL_EVA_CONTRACT()
     __FUNC_SIG(eva_NINE)  0x00 mstore CALL_EVA_CONTRACT()
